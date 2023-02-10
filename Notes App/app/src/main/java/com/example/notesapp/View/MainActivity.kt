@@ -11,7 +11,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.Model.Note
 import com.example.notesapp.NoteApp
 import com.example.notesapp.R
@@ -60,6 +62,22 @@ class MainActivity : AppCompatActivity() {
             adapter.setNote(it)
 
         })
+
+        // delete a note:
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                noteViewModel.delete(adapter.getNote(viewHolder.adapterPosition))
+            }
+
+        }).attachToRecyclerView(recyclerView)
     }
 
     // creating the option menu:
@@ -76,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             R.id.deleteall -> {
 
                 // code that should be executed:
+                noteViewModel.deleteAll()
                 Toast.makeText(this, "Deleted all the notes", Toast.LENGTH_SHORT).show()
             }
         }

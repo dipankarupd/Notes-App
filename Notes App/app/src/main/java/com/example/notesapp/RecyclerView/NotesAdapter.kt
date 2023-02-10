@@ -36,5 +36,11 @@ class NotesAdapter() : RecyclerView.Adapter<NoteViewHolder>() {
 
     fun setNote(notes : List<Note>) {
         this.items = notes
+        notifyDataSetChanged()
+    }
+
+    // getting a note at a given index of the list:
+    fun getNote(position : Int) : Note {
+        return items[position]
     }
 }

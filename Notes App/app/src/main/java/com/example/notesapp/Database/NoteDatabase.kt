@@ -50,11 +50,11 @@ abstract class NoteDatabase  : RoomDatabase(){
 
         override fun onCreate(db: SupportSQLiteDatabase) {
 
-            INSTANCE ?.let {
+            INSTANCE ?.let {database ->
 
                 scope.launch {
 
-                    val noteDao = it.getNoteDao()
+                    val noteDao = database.getNoteDao()
                     noteDao.insertNote(Note("Title 1", "Description 1"))
                     noteDao.insertNote(Note("Title 2", "Description 2"))
                     noteDao.insertNote(Note("Title 3" , "Description 3"))

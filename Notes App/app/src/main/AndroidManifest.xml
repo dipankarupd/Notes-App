@@ -13,13 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
-        <activity
-            android:name=".AddNewNote"
-            android:exported="false">
+        <activity android:name=".View.AddNewNote"
+            android:parentActivityName=".View.MainActivity"/>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
         <activity
             android:name=".View.MainActivity"
             android:exported="true">
