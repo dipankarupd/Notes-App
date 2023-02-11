@@ -1,13 +1,17 @@
 package com.example.notesapp.RecyclerView
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.Model.Note
 import com.example.notesapp.R
+import com.example.notesapp.View.MainActivity
+import com.example.notesapp.View.UpdateNote
 
-class NotesAdapter() : RecyclerView.Adapter<NoteViewHolder>() {
+// constructor takes context of min activity for updating the intent here
+class NotesAdapter(val activity : MainActivity) : RecyclerView.Adapter<NoteViewHolder>() {
 
     var items : List<Note> = ArrayList()
 
@@ -27,6 +31,18 @@ class NotesAdapter() : RecyclerView.Adapter<NoteViewHolder>() {
 
         holder.title.text = current.title
         holder.description.text = current.description
+
+        // adding a click listener to update:
+        holder.itemView.setOnClickListener {
+
+            // create a new activity for updating:
+            val intent = Intent(activity, UpdateNote :: class.java)
+            intent.putExtra("updateTitle", current.title)
+            intent.putExtra("updateDescription",current.description)
+            intent.putExtra("noteId", current.id)
+            activity.updateActivityResultLauncher.launch(intent)
+
+        }
     }
 
     override fun getItemCount(): Int {

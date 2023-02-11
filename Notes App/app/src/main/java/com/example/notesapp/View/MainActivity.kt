@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     // instance of activityLauncher:
     lateinit var addActivityResultLauncher : ActivityResultLauncher<Intent>
+    lateinit var updateActivityResultLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         // recycler view:
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = NotesAdapter()
+        val adapter = NotesAdapter(this)
 
         recyclerView.adapter = adapter
 
@@ -120,7 +121,26 @@ class MainActivity : AppCompatActivity() {
                     noteViewModel.insert(note)
 
                 }
-            })
+            }
+        )
+        updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),
+            ActivityResultCallback {
+                val resultCode = it.resultCode
+                val resultData = it.data
+
+                // getting the note from the intent
+                if (resultCode == RESULT_OK && resultData != null) {
+                    val updatedTitle : String = resultData.getStringExtra("Updated Title").toString()
+                    val updatedDescription : String = resultData.getStringExtra("Updated Description").toString()
+                    val updatedId : Int = resultData.getIntExtra("Id",-1)
+
+                    val newNote = Note(updatedTitle,updatedDescription)
+                    newNote.id = updatedId
+
+                    noteViewModel.update(newNote)
+                }
+            }
+        )
     }
 
     // adding the new note
